@@ -1,48 +1,23 @@
-var ball;
 var database;
-var position;
+var canvas;
+var form,player,game;
+var gameState=0;
+var playerCount;
 
 function setup(){
-    createCanvas(500,500);
+    canvas =createCanvas(400,400);
     database = firebase.database();
-    ball = createSprite(250,250,10,10);
-    ball.shapeColor = "red";
-    var ballposition = database.ref("ball/position");
-    ballposition.on("value",readPosition);
+   game = new Game();
+   game.getState();
+   game.start();
 
 }
 
 function draw(){
-    background("white");
-    if (position!==undefined){
-
-    
-    if(keyDown(LEFT_ARROW)){
-        writePosition(-1,0);
-    }
-    else if(keyDown(RIGHT_ARROW)){
-        writePosition(1,0);
-    }
-    else if(keyDown(UP_ARROW)){
-        writePosition(0,-1);
-    }
-    else if(keyDown(DOWN_ARROW)){
-        writePosition(0,+1);
-    }
-}
+    background("red");
+   
     drawSprites();
 }
 
-function writePosition(x,y){
-   database.ref("ball/position").set({
-   "x":position.x+x,
-   "y":position.y+y
-})
-}
 
-function readPosition(data){
-    position = data.val();
-    ball.x=position.x;
-    ball.y=position.y;
-}
 
